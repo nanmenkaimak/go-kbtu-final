@@ -1,0 +1,86 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div>
+        {{$res := index .Data "item"}}
+        {{$cmt := index .Data "comments"}}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Rating</th>
+                <th>Category</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>{{$res.ID}}</td>
+                <td>{{$res.Name}}</td>
+                <td>{{$res.Price}}</td>
+                <td>{{$res.Rating}}</td>
+                <td>{{$res.Category}}</td>
+                <td>{{$res.Description}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form method="post" action="/items/filter/{{$res.ID}}" novalidate>
+        <label for="comment">Write Comment:</label>
+        <input id="comment" autocomplete="off" type="text"
+               name="comment" required>
+        <label for="rate">Give Rating:</label>
+        <input type="radio" id="rating1" name="rating" value="1">
+        <label for="rating1">1</label>
+        <input type="radio" id="rating2" name="rating" value="2">
+        <label for="rating2">2</label>
+        <input type="radio" id="rating3" name="rating" value="3">
+        <label for="rating3">3</label>
+        <input type="radio" id="rating4" name="rating" value="4">
+        <label for="rating4">4</label>
+        <input type="radio" id="rating5" name="rating" value="5">
+        <label for="rating5">5</label>
+        <input type="submit" value="Save">
+    </form>
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Author</th>
+                <th>Text</th>
+                <th>Rating</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range $cmt}}
+                <tr>
+                    <td>{{.AuthorName}}</td>
+                    <td>{{.Text}}</td>
+                    <td>{{.Rating}}</td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </div>
+
+
+    {{$curuser := index .Data "user"}}
+
+    {{if eq $curuser.Role 2}}
+        <form method="get" action="" novalidate>
+            <div>
+                <a href="/items/filter/delete/{{$res.ID}}">Delete This Item</a>
+            </div>
+        </form>
+
+        <div>
+            <a href="/items/filter/update/{{$res.ID}}">Update</a>
+        </div>
+    {{end}}
+    <a href="/items/filter" aria-disabled="true" tabindex="-1">Go Back</a>
+{{end}}

@@ -1,0 +1,24 @@
+{{template  "base" .}}
+
+{{define "content"}}
+    This is Insert Item page
+    <form method="post" action="/items/filter/insert" novalidate>
+        <div>
+            <label for="name">Name:</label>
+            <input id="name" name="name" type="text" autocomplete="off" value="" required>
+        </div>
+        <div>
+            <label for="price">Price:</label>
+            <input id="price" name="price" type="text" autocomplete="off" value="" required>
+        </div>
+        <div>
+            <label for="category">Category:</label>
+            <input id="category" name="category" type="text" autocomplete="off" value="" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <input id="description" name="description" type="text" autocomplete="off" value="" required>
+        </div>
+        <input type="submit" value="Insert">
+    </form>
+{{end}}

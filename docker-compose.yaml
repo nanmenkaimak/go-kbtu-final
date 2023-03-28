@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  final-go-kbtu:
+    build: ./
+    command: ./final-go-kbtu
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=1899milankaka
+
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=1899milankaka
+    ports:
+      - 5432:5436

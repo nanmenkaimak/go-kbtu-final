@@ -1,0 +1,25 @@
+{{template  "base" .}}
+
+{{define "content"}}
+    This is Insert Item page
+    {{$res := index .Data "item"}}
+    <form method="post" action="/items/filter/update/{{$res.ID}}" novalidate>
+        <div>
+            <label for="name">Name:</label>
+            <input id="name" name="name" type="text" autocomplete="off" value="{{$res.Name}}" required>
+        </div>
+        <div>
+            <label for="price">Price:</label>
+            <input id="price" name="price" type="text" autocomplete="off" value="{{$res.Price}}" required>
+        </div>
+        <div>
+            <label for="category">Category:</label>
+            <input id="category" name="category" type="text" autocomplete="off" value="{{$res.Category}}" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <input id="description" name="description" type="text" autocomplete="off" value="{{$res.Description}}" required>
+        </div>
+        <input type="submit" value="Update">
+    </form>
+{{end}}
