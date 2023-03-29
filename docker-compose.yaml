@@ -15,8 +15,13 @@ services:
     restart: always
     image: postgres:latest
     volumes:
-      - ./.database/postgres/data:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1899milankaka
+      - POSTGRES_DB=kbtu_project
     ports:
-      - 5432:5436
+      - '5432:5432'
+volumes:
+  db:
+    driver: local
