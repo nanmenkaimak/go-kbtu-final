@@ -119,17 +119,6 @@ func (m *postgresDBRepo) GetItemsByRating(rating float64) ([]models.Item, error)
 	return item, nil
 }
 
-func (m *postgresDBRepo) GetItemsBySeller(sellerID int) ([]models.Item, error) {
-	var item []models.Item
-	result := m.DB.Where("seller_id = ?", sellerID).Find(&item)
-
-	if result.Error != nil {
-		return item, result.Error
-	}
-
-	return item, nil
-}
-
 func (m *postgresDBRepo) GetAllCommentsOfItem(itemID int) ([]models.Comment, error) {
 	var comments []models.Comment
 	result := m.DB.Where("item_id = ?", itemID).Find(&comments)

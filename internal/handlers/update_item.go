@@ -53,7 +53,6 @@ func (m *Repository) UpdateItem(w http.ResponseWriter, r *http.Request) {
 		Price:       price,
 		Category:    category,
 		Description: description,
-		SellerID:    1,
 	}
 
 	err = m.DB.UpdateItem(id, newItem)

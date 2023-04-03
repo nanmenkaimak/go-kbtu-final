@@ -16,7 +16,6 @@ type DatabaseRepo interface {
 	GetItemsByCategory(category string) ([]models.Item, error)
 	GetItemsByPrice(price float64) ([]models.Item, error)
 	GetItemsByRating(rating float64) ([]models.Item, error)
-	GetItemsBySeller(sellerID int) ([]models.Item, error)
 	UpdateItem(id int, updatedItem models.Item) error
 	UpdateItemRating(id int, rating int) error
 	DeleteItem(id int) error

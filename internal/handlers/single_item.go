@@ -32,6 +32,12 @@ func (m *Repository) SingleItem(w http.ResponseWriter, r *http.Request) {
 	data["item"] = item
 	data["comments"] = comments
 	data["user"] = currentUser
+	data["theircomment"] = false
+
+	itemcmt, err := m.DB.GetItemById(id)
+	if itemcmt.SellerID == currentUser.ID || currentUser.Role == 3 {
+		data["theircomment"] = true
+	}
 
 	render.Template(w, r, "item.page.gohtml", &models.TemplateData{
 		Form: nil,
@@ -56,18 +62,18 @@ func (m *Repository) PostSingleItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = m.DB.UpdateItemRating(id, rate)
-	if err != nil {
-		log.Println(err)
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
-
 	comment := r.Form.Get("comment")
 
 	if comment == "" {
 		log.Println(err)
 		http.Redirect(w, r, "/items/filter", http.StatusSeeOther)
+		return
+	}
+
+	err = m.DB.UpdateItemRating(id, rate)
+	if err != nil {
+		log.Println(err)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 

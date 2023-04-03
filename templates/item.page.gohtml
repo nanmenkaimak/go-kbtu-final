@@ -70,8 +70,9 @@
 
 
     {{$curuser := index .Data "user"}}
+    {{$theircomment := index .Data "theircomment"}}
 
-    {{if eq $curuser.Role 2}}
+    {{if $theircomment}}
         <form method="get" action="" novalidate>
             <div>
                 <a href="/items/filter/delete/{{$res.ID}}">Delete This Item</a>
