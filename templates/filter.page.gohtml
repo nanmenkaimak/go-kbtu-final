@@ -39,7 +39,7 @@
         </form>
     </div>
     {{$curuser := index .Data "user"}}
-    {{if eq $curuser.Role 2}}
+    {{if eq $curuser.RoleID 2}}
     <div>
         <a href="/items/filter/insert">Add New Item</a>
     </div>
@@ -65,7 +65,7 @@
                     <td><a href="/items/filter/{{.ID}}">{{.Name}}</a></td>
                     <td>{{.Price}}</td>
                     <td>{{.Rating}}</td>
-                    <td>{{.Category}}</td>
+                    <td>{{.Category.Name}}</td>
                     <td>{{.Description}}</td>
                 </tr>
             {{end}}

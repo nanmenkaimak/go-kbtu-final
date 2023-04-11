@@ -19,8 +19,16 @@ func (m *Repository) ShowUpdateItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	categories, err := m.DB.GetAllCategories()
+	if err != nil {
+		log.Println(err)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
 	data := make(map[string]interface{})
 	data["item"] = item
+	data["categories"] = categories
 
 	render.Template(w, r, "update.page.gohtml", &models.TemplateData{
 		Form: nil,
@@ -47,11 +55,12 @@ func (m *Repository) UpdateItem(w http.ResponseWriter, r *http.Request) {
 	}
 	category := r.Form.Get("category")
 	description := r.Form.Get("description")
+	categoryID, err := m.DB.GetIDOfCategoryByName(category)
 
-	newItem := models.Item{
+	newItem := models.Items{
 		Name:        name,
 		Price:       price,
-		Category:    category,
+		CategoryID:  categoryID.ID,
 		Description: description,
 	}
 

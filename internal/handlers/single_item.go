@@ -26,6 +26,11 @@ func (m *Repository) SingleItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for i := range comments {
+		author, _ := m.DB.GetUserByID(comments[i].AuthorID)
+		comments[i].Author.FirstName = author.FirstName
+	}
+
 	currentUser, _ := m.GetUserFromSession(w, r)
 
 	data := make(map[string]interface{})
@@ -35,7 +40,7 @@ func (m *Repository) SingleItem(w http.ResponseWriter, r *http.Request) {
 	data["theircomment"] = false
 
 	itemcmt, err := m.DB.GetItemById(id)
-	if itemcmt.SellerID == currentUser.ID || currentUser.Role == 3 {
+	if itemcmt.SellerID == currentUser.ID || currentUser.RoleID == 3 {
 		data["theircomment"] = true
 	}
 
@@ -79,14 +84,13 @@ func (m *Repository) PostSingleItem(w http.ResponseWriter, r *http.Request) {
 
 	currentUser, _ := m.GetUserFromSession(w, r)
 
-	newComment := models.Comment{
-		ItemID:     id,
-		Text:       comment,
-		Rating:     rate,
-		AuthorID:   currentUser.ID,
-		AuthorName: currentUser.FirstName,
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
+	newComment := models.Comments{
+		ItemID:    id,
+		Text:      comment,
+		Rating:    rate,
+		AuthorID:  currentUser.ID,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	_, err = m.DB.InsertComment(newComment)

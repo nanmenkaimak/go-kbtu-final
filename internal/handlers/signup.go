@@ -28,17 +28,18 @@ func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
 	password := r.Form.Get("password")
 	role := r.Form.Get("role")
 
-	newUser := models.User{
+	roleID, err := m.DB.GetIDOfRoleByName(role)
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	newUser := models.Users{
 		FirstName: first_name,
 		LastName:  last_name,
 		Email:     email,
 		Password:  password,
-	}
-
-	if role == "Client" {
-		newUser.Role = 1
-	} else if role == "Seller" {
-		newUser.Role = 2
+		RoleID:    roleID.ID,
 	}
 
 	form := forms.New(r.PostForm)

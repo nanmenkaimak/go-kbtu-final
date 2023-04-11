@@ -10,8 +10,18 @@ import (
 )
 
 func (m *Repository) ShowInsertItem(w http.ResponseWriter, r *http.Request) {
+	categories, err := m.DB.GetAllCategories()
+	if err != nil {
+		log.Println(err)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["categories"] = categories
 	render.Template(w, r, "insert.page.gohtml", &models.TemplateData{
 		Form: forms.New(nil),
+		Data: data,
 	})
 }
 
@@ -34,10 +44,12 @@ func (m *Repository) InsertItem(w http.ResponseWriter, r *http.Request) {
 
 	currentUser, _ := m.GetUserFromSession(w, r)
 
-	newItem := models.Item{
+	categoryID, err := m.DB.GetIDOfCategoryByName(category)
+
+	newItem := models.Items{
 		Name:        name,
 		Price:       price,
-		Category:    category,
+		CategoryID:  categoryID.ID,
 		Description: description,
 		SellerID:    currentUser.ID,
 	}

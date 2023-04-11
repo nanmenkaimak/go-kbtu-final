@@ -7,7 +7,6 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Rating</th>
@@ -18,11 +17,10 @@
             <tbody>
 
             <tr>
-                <td>{{$res.ID}}</td>
                 <td>{{$res.Name}}</td>
                 <td>{{$res.Price}}</td>
                 <td>{{$res.Rating}}</td>
-                <td>{{$res.Category}}</td>
+                <td>{{$res.Category.Name}}</td>
                 <td>{{$res.Description}}</td>
             </tr>
             </tbody>
@@ -59,7 +57,7 @@
             <tbody>
             {{range $cmt}}
                 <tr>
-                    <td>{{.AuthorName}}</td>
+                    <td>{{.Author.FirstName}}</td>
                     <td>{{.Text}}</td>
                     <td>{{.Rating}}</td>
                 </tr>

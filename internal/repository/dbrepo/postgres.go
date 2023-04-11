@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (m *postgresDBRepo) InsertUser(newUser models.User) (int, error) {
+func (m *postgresDBRepo) InsertUser(newUser models.Users) (int, error) {
 	password, err := hashPassword(newUser.Password)
 	if err != nil {
 		return 0, err
@@ -19,115 +19,119 @@ func (m *postgresDBRepo) InsertUser(newUser models.User) (int, error) {
 	return newUser.ID, result.Error
 }
 
-func (m *postgresDBRepo) InsertItem(newItem models.Item) (int, error) {
+func (m *postgresDBRepo) InsertItem(newItem models.Items) (int, error) {
 	result := m.DB.Create(&newItem)
 
 	return newItem.ID, result.Error
 }
 
-func (m *postgresDBRepo) InsertComment(newComment models.Comment) (int, error) {
+func (m *postgresDBRepo) InsertComment(newComment models.Comments) (int, error) {
 	result := m.DB.Create(&newComment)
 
 	return newComment.ID, result.Error
 }
 
-func (m *postgresDBRepo) GetAllItems() ([]models.Item, error) {
-	var items []models.Item
+func (m *postgresDBRepo) GetAllItems() ([]models.Items, error) {
+	var items []models.Items
 	result := m.DB.Find(&items)
 
-	if result.Error != nil {
-		return nil, result.Error
+	for i := range items {
+		cat, _ := m.GetNameOfCategoryByID(items[i].CategoryID)
+		items[i].Category = cat
 	}
 
-	return items, nil
+	return items, result.Error
 }
 
-func (m *postgresDBRepo) GetUserByID(id int) (models.User, error) {
-	var user models.User
+func (m *postgresDBRepo) GetUserByID(id int) (models.Users, error) {
+	var user models.Users
 	result := m.DB.Where("id = ?", id).Find(&user)
 
-	if result.Error != nil {
-		return user, result.Error
-	}
-
-	return user, nil
+	return user, result.Error
 }
 
-func (m *postgresDBRepo) GetUsersByRole(role int) ([]models.User, error) {
-	var user []models.User
-	result := m.DB.Where("role = ?", role).Find(&user)
+func (m *postgresDBRepo) GetUsersByRole(role int) ([]models.Users, error) {
+	var user []models.Users
+	result := m.DB.Where("role_id = ?", role).Find(&user)
 
-	if result.Error != nil {
-		return user, result.Error
-	}
-
-	return user, nil
+	return user, result.Error
 }
 
-func (m *postgresDBRepo) GetItemById(id int) (models.Item, error) {
-	var item models.Item
+func (m *postgresDBRepo) GetItemById(id int) (models.Items, error) {
+	var item models.Items
 	result := m.DB.Where("id = ?", id).Find(&item)
 
-	if result.Error != nil {
-		return item, result.Error
-	}
+	cat, _ := m.GetNameOfCategoryByID(item.CategoryID)
+	item.Category = cat
 
-	return item, nil
+	return item, result.Error
 }
 
-func (m *postgresDBRepo) GetItemsByName(name string) ([]models.Item, error) {
-	var item []models.Item
+func (m *postgresDBRepo) GetItemsByName(name string) ([]models.Items, error) {
+	var item []models.Items
 	result := m.DB.Where("name = ?", name).Find(&item)
 
-	if result.Error != nil {
-		return item, result.Error
-	}
-
-	return item, nil
+	return item, result.Error
 }
 
-func (m *postgresDBRepo) GetItemsByCategory(category string) ([]models.Item, error) {
-	var item []models.Item
-	result := m.DB.Where("category = ?", category).Find(&item)
+func (m *postgresDBRepo) GetIDOfCategoryByName(name string) (models.Categories, error) {
+	var category models.Categories
+	result := m.DB.Where("name = ?", name).Find(&category)
 
-	if result.Error != nil {
-		return item, result.Error
-	}
-
-	return item, nil
+	return category, result.Error
 }
 
-func (m *postgresDBRepo) GetItemsByPrice(price float64) ([]models.Item, error) {
-	var item []models.Item
+func (m *postgresDBRepo) GetNameOfCategoryByID(id int) (models.Categories, error) {
+	var category models.Categories
+	result := m.DB.Where("id = ?", id).Find(&category)
+
+	return category, result.Error
+}
+
+func (m *postgresDBRepo) GetIDOfRoleByName(name string) (models.Roles, error) {
+	var role models.Roles
+	result := m.DB.Where("name = ?", name).Find(&role)
+
+	return role, result.Error
+}
+
+func (m *postgresDBRepo) GetAllCategories() ([]models.Categories, error) {
+	var categories []models.Categories
+	result := m.DB.Find(&categories)
+
+	return categories, result.Error
+}
+
+func (m *postgresDBRepo) GetItemsByCategory(name string) ([]models.Items, error) {
+	category, err := m.GetIDOfCategoryByName(name)
+	if err != nil {
+		return nil, err
+	}
+	var item []models.Items
+	result := m.DB.Where("category_id = ?", category.ID).Find(&item)
+
+	return item, result.Error
+}
+
+func (m *postgresDBRepo) GetItemsByPrice(price float64) ([]models.Items, error) {
+	var item []models.Items
 	result := m.DB.Where("price <= ?", price).Find(&item)
 
-	if result.Error != nil {
-		return item, result.Error
-	}
-
-	return item, nil
+	return item, result.Error
 }
 
-func (m *postgresDBRepo) GetItemsByRating(rating float64) ([]models.Item, error) {
-	var item []models.Item
+func (m *postgresDBRepo) GetItemsByRating(rating float64) ([]models.Items, error) {
+	var item []models.Items
 	result := m.DB.Where("rating >= ?", rating).Find(&item)
 
-	if result.Error != nil {
-		return item, result.Error
-	}
-
-	return item, nil
+	return item, result.Error
 }
 
-func (m *postgresDBRepo) GetAllCommentsOfItem(itemID int) ([]models.Comment, error) {
-	var comments []models.Comment
+func (m *postgresDBRepo) GetAllCommentsOfItem(itemID int) ([]models.Comments, error) {
+	var comments []models.Comments
 	result := m.DB.Where("item_id = ?", itemID).Find(&comments)
 
-	if result.Error != nil {
-		return comments, result.Error
-	}
-
-	return comments, nil
+	return comments, result.Error
 }
 
 //func (m *postgresDBRepo) GetAllCommentsOfUser(userID int) ([]models.Comment, error) {
@@ -138,8 +142,8 @@ func (m *postgresDBRepo) GetAllCommentsOfItem(itemID int) ([]models.Comment, err
 //
 //}
 
-func (m *postgresDBRepo) UpdateUser(id int, updatedUser models.User) error {
-	var newUser models.User
+func (m *postgresDBRepo) UpdateUser(id int, updatedUser models.Users) error {
+	var newUser models.Users
 	password, err := hashPassword(updatedUser.Password)
 	if err != nil {
 		return err
@@ -150,8 +154,8 @@ func (m *postgresDBRepo) UpdateUser(id int, updatedUser models.User) error {
 	return result.Error
 }
 
-func (m *postgresDBRepo) UpdateItem(id int, updatedItem models.Item) error {
-	var newItem models.Item
+func (m *postgresDBRepo) UpdateItem(id int, updatedItem models.Items) error {
+	var newItem models.Items
 
 	result := m.DB.Model(&newItem).Where("id = ?", id).Updates(updatedItem)
 
@@ -159,7 +163,7 @@ func (m *postgresDBRepo) UpdateItem(id int, updatedItem models.Item) error {
 }
 
 func (m *postgresDBRepo) UpdateItemRating(id int, rating int) error {
-	var item models.Item
+	var item models.Items
 
 	query := `update items set rating = rating + ((? - rating) / (number_of_ratings + 1)),
 			number_of_ratings = number_of_ratings + 1,
@@ -177,14 +181,14 @@ func (m *postgresDBRepo) UpdateItemRating(id int, rating int) error {
 //
 
 func (m *postgresDBRepo) DeleteUser(id int) error {
-	var user models.User
+	var user models.Users
 	result := m.DB.Delete(&user, id)
 
 	return result.Error
 }
 
 func (m *postgresDBRepo) DeleteItem(id int) error {
-	var item models.Item
+	var item models.Items
 
 	result := m.DB.Delete(&item, id)
 
@@ -195,16 +199,16 @@ func (m *postgresDBRepo) DeleteItem(id int) error {
 //
 //}
 
-func (m *postgresDBRepo) SortItemByPriceAsc() ([]models.Item, error) {
-	var items []models.Item
+func (m *postgresDBRepo) SortItemByPriceAsc() ([]models.Items, error) {
+	var items []models.Items
 
 	result := m.DB.Order("price asc").Find(&items)
 
 	return items, result.Error
 }
 
-func (m *postgresDBRepo) SortItemByPriceDesc() ([]models.Item, error) {
-	var items []models.Item
+func (m *postgresDBRepo) SortItemByPriceDesc() ([]models.Items, error) {
+	var items []models.Items
 
 	result := m.DB.Order("price desc").Find(&items)
 
@@ -212,7 +216,7 @@ func (m *postgresDBRepo) SortItemByPriceDesc() ([]models.Item, error) {
 }
 
 func (m *postgresDBRepo) Authenticate(email string, password string) (int, string, error) {
-	var user models.User
+	var user models.Users
 
 	m.DB.First(&user, "email = ?", email)
 

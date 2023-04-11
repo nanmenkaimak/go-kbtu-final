@@ -36,7 +36,7 @@ func (m *Repository) SortItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var items []models.Item
+	var items []models.Items
 
 	if r.Form.Get("price") != "" {
 		price, err := strconv.ParseFloat(r.Form.Get("price"), 64)
@@ -87,6 +87,11 @@ func (m *Repository) SortItems(w http.ResponseWriter, r *http.Request) {
 	}
 
 	currentUser, _ := m.GetUserFromSession(w, r)
+
+	for i := range items {
+		cat, _ := m.DB.GetNameOfCategoryByID(items[i].CategoryID)
+		items[i].Category = cat
+	}
 
 	data := make(map[string]interface{})
 	data["items"] = items

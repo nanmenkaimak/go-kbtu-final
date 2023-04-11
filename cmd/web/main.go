@@ -32,7 +32,7 @@ func main() {
 	// read flags
 	inProduction := flag.Bool("production", true, "Application is in production")
 	useCache := flag.Bool("cache", true, "Use template cache")
-	dbHost := flag.String("dbhost", "db", "Database host")
+	dbHost := flag.String("dbhost", "localhost", "Database host")
 	dbName := flag.String("dbname", "kbtu_project", "Database name")
 	dbUser := flag.String("dbuser", "postgres", "Database user")
 	dbPass := flag.String("dbpass", string(content), "Database password")
@@ -67,7 +67,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&models.User{}, &models.Item{}, &models.Comment{})
+	db.AutoMigrate(&models.Users{}, &models.Items{}, &models.Comments{}, &models.Roles{}, &models.Categories{})
 
 	//change this to true when in production
 	app.InProduction = *inProduction

@@ -13,8 +13,14 @@
             <input id="price" name="price" type="text" autocomplete="off" value="{{$res.Price}}" required>
         </div>
         <div>
+            {{$cat := index .Data "categories"}}
             <label for="category">Category:</label>
-            <input id="category" name="category" type="text" autocomplete="off" value="{{$res.Category}}" required>
+            <input id="category" name="category" type="text" autocomplete="off" value="{{$res.Category.Name}}" required list="categories">
+            <datalist id="categories">
+                {{range $cat}}
+                    <option value="{{.Name}}"></option>
+                {{end}}
+            </datalist>
         </div>
         <div>
             <label for="description">Description:</label>
