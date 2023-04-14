@@ -39,8 +39,7 @@ func (m *Repository) SingleItem(w http.ResponseWriter, r *http.Request) {
 	data["user"] = currentUser
 	data["theircomment"] = false
 
-	itemcmt, err := m.DB.GetItemById(id)
-	if itemcmt.SellerID == currentUser.ID || currentUser.RoleID == 3 {
+	if item.SellerID == currentUser.ID || currentUser.RoleID == 3 {
 		data["theircomment"] = true
 	}
 

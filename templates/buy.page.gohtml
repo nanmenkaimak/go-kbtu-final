@@ -1,0 +1,36 @@
+{{template  "base" .}}
+
+{{define "content"}}
+    Where you want to deliver
+    {{$res := index .Data "item"}}
+    <form method="post" action="/items/filter/buy/{{$res.ID}}" novalidate>
+        <div>
+            <label for="country-state">State:</label>
+            <select id="country-state" name="country-state">
+                <option value="">Select state</option>
+                <option value="AKM">Akmola Region</option>
+                <option value="AKT">Aktobe Region</option>
+                <option value="ALA">Almaty</option>
+                <option value="ALM">Almaty Region</option>
+                <option value="ATY">Atyrau Region</option>
+                <option value="BAY">Baikonur</option>
+                <option value="VOS">East Kazakhstan Region</option>
+                <option value="ZHA">Jambyl Region</option>
+                <option value="KAR">Karaganda Region</option>
+                <option value="KUS">Kostanay Region</option>
+                <option value="KZY">Kyzylorda Region</option>
+                <option value="MAN">Mangystau Region</option>
+                <option value="SEV">North Kazakhstan Region</option>
+                <option value="AST">Nur-Sultan</option>
+                <option value="PAV">Pavlodar Region</option>
+                <option value="YUZ">Turkestan Region</option>
+                <option value="ZAP">West Kazakhstan Province</option>
+            </select>
+        </div>
+        <div>
+            <label for="address">Address:</label>
+            <input id="address" name="address" type="text" autocomplete="off" value="" required>
+        </div>
+        <input type="submit" value="Buy">
+    </form>
+{{end}}

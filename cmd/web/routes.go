@@ -38,5 +38,8 @@ func routes(app *config.AppConfig) http.Handler {
 
 	mux.Get("/items/filter/delete/{id}", handlers.Repo.DeleteSingleItem)
 
+	mux.Get("/items/filter/buy/{id}", handlers.Repo.BuyItem)
+	mux.Post("/items/filter/buy/{id}", handlers.Repo.PostBuyItem)
+
 	return mux
 }

@@ -80,6 +80,10 @@
         <div>
             <a href="/items/filter/update/{{$res.ID}}">Update</a>
         </div>
+    {{else}}
+        <div>
+            <a href="/items/filter/buy/{{$res.ID}}">Buy</a>
+        </div>
     {{end}}
     <a href="/items/filter" aria-disabled="true" tabindex="-1">Go Back</a>
 {{end}}
