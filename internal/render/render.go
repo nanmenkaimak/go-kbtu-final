@@ -25,11 +25,10 @@ func NewRenderer(a *config.AppConfig) {
 
 // AddDefaultData add data for all templates
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
-	td.Flash = app.Session.PopString(r.Context(), "flash")
-	td.Error = app.Session.PopString(r.Context(), "error")
-	td.Warning = app.Session.PopString(r.Context(), "warning")
 	td.CSRFToken = nosurf.Token(r)
-	if app.Session.Exists(r.Context(), "user_id") {
+
+	_, err := r.Cookie("token")
+	if err == nil {
 		td.IsAuthenticated = 1
 	}
 	return td

@@ -31,7 +31,7 @@ func (m *Repository) SingleItem(w http.ResponseWriter, r *http.Request) {
 		comments[i].Author.FirstName = author.FirstName
 	}
 
-	currentUser, _ := m.GetUserFromSession(w, r)
+	currentUser, _ := m.GetUserFromJWT(w, r)
 
 	data := make(map[string]interface{})
 	data["item"] = item
@@ -81,7 +81,7 @@ func (m *Repository) PostSingleItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	currentUser, _ := m.GetUserFromSession(w, r)
+	currentUser, _ := m.GetUserFromJWT(w, r)
 
 	newComment := models.Comments{
 		ItemID:    id,

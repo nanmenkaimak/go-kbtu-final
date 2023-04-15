@@ -14,8 +14,6 @@ func (m *Repository) ShowSignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) SignUp(w http.ResponseWriter, r *http.Request) {
-	_ = m.App.Session.RenewToken(r.Context())
-
 	err := r.ParseForm()
 	if err != nil {
 		http.Redirect(w, r, "/", http.StatusSeeOther)

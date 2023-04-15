@@ -42,7 +42,7 @@ func (m *Repository) InsertItem(w http.ResponseWriter, r *http.Request) {
 	category := r.Form.Get("category")
 	description := r.Form.Get("description")
 
-	currentUser, _ := m.GetUserFromSession(w, r)
+	currentUser, _ := m.GetUserFromJWT(w, r)
 
 	categoryID, err := m.DB.GetIDOfCategoryByName(category)
 

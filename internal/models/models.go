@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
 
@@ -51,4 +52,9 @@ type Comments struct {
 	Author    Users     `json:"author" gorm:"not null; constraint:OnDelete:CASCADE;"`
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"not null"`
+}
+
+type Claims struct {
+	ID int `json:"id"`
+	jwt.RegisteredClaims
 }

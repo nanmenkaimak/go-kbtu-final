@@ -15,7 +15,7 @@ func (m *Repository) GetAllItems(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	currentUser, _ := m.GetUserFromSession(w, r)
+	currentUser, _ := m.GetUserFromJWT(w, r)
 
 	data := make(map[string]interface{})
 	data["items"] = items
@@ -86,7 +86,7 @@ func (m *Repository) SortItems(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	currentUser, _ := m.GetUserFromSession(w, r)
+	currentUser, _ := m.GetUserFromJWT(w, r)
 
 	for i := range items {
 		cat, _ := m.DB.GetNameOfCategoryByID(items[i].CategoryID)

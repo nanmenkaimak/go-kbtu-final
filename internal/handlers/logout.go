@@ -1,10 +1,15 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+	"time"
+)
 
 func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
-	_ = m.App.Session.Destroy(r.Context())
-	_ = m.App.Session.RenewToken(r.Context())
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Expires: time.Now(),
+	})
 
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }

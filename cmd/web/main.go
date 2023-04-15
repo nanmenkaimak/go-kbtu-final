@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/alexedwards/scs/v2"
 	"github.com/nanmenkaimak/final-go-kbtu/internal/config"
 	"github.com/nanmenkaimak/final-go-kbtu/internal/handlers"
 	"github.com/nanmenkaimak/final-go-kbtu/internal/models"
@@ -13,13 +12,11 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 )
 
 const portNumber = ":8080"
 
 var app config.AppConfig
-var session *scs.SessionManager
 var infoLog *log.Logger
 var errorLog *log.Logger
 
@@ -48,14 +45,6 @@ func main() {
 
 	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	app.ErrorLog = errorLog
-
-	session = scs.New()
-	session.Lifetime = 24 * time.Hour
-	session.Cookie.Persist = true //save the info about user when they close the window
-	session.Cookie.SameSite = http.SameSiteLaxMode
-	session.Cookie.Secure = app.InProduction
-
-	app.Session = session
 
 	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", *dbHost, *dbPort, *dbName, *dbUser, *dbPass, *dbSSL)
 	db, err := gorm.Open(postgres.New(postgres.Config{
