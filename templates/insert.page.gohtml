@@ -1,17 +1,65 @@
 {{template  "base" .}}
+<style>
+    body{
+        background-color:rgb(241, 241, 241);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .block{
+        border-radius:11px;
+        margin:10px;
+        padding:10px;
+        width: 180px;
+        height:40px;
+        display: flex;
+        flex-direction: column;
+    }
+    form{
+        margin-top:80px;
+        border-radius:11px;
+        border:1px solid rgb(180,180,180);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    input[type="submit"] {
+        background-color: #007bff;
+        border: none;
+        color: #fff;
+        padding: 12px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+        margin-left: 70px;
+    }
 
+    h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333333;
+        margin-bottom: 20px;
+        margin: 10px;
+    }
+
+</style>
 {{define "content"}}
-    This is Insert Item page
+    <body>
+
     <form method="post" action="/items/filter/insert" novalidate>
-        <div>
+        <h2>Please insert your item</h2>
+        <div class ="block">
             <label for="name">Name:</label>
             <input id="name" name="name" type="text" autocomplete="off" value="" required>
         </div>
-        <div>
+        <div class ="block">
             <label for="price">Price:</label>
             <input id="price" name="price" type="text" autocomplete="off" value="" required>
         </div>
-        <div>
+        <div class ="block">
             {{$res := index .Data "categories"}}
             <label for="category">Category:</label>
             <input id="category" name="category" type="text" autocomplete="off" value="" required list="categories">
@@ -21,10 +69,11 @@
                 {{end}}
             </datalist>
         </div>
-        <div>
+        <div class ="block">
             <label for="description">Description:</label>
             <input id="description" name="description" type="text" autocomplete="off" value="" required>
         </div>
         <input type="submit" value="Insert">
     </form>
+    </body>
 {{end}}

@@ -1,7 +1,109 @@
 {{template "base" .}}
+<style>
+    body{
+        background-color:rgb(241, 241, 241);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .block{
+        margin-top:100px;
+        margin-right:100px;
+        border-radius:11px;
+        margin:10px;
+        padding:10px;
+        width: 180px;
+        height:40px;
+        display: flex;
+        flex-direction: column;
+    }
+    form{
+        margin-top:-10px;
+        border-radius:11px;
+        border:1px solid rgb(180,180,180);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    input[type="submit"] {
+        background-color: #007bff;
+        border: none;
+        color: #fff;
+        padding: 12px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+        margin-left: 62px;
+    }
 
+    h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333333;
+        margin-bottom: 20px;
+        margin: 10px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 200px;
+        margin-top: 200px;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th, td:hover{
+        background-color: rgb(232, 232, 232);
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        border: 1px solid gray;
+    }
+    a {
+        color: blue;
+        text-decoration: none;
+        margin-top:11px;
+    }
+    .writecom{
+        margin-left: -520px;
+        margin-top: -380px;
+
+    }
+    .tb1{
+        margin-top: -350px;
+    }
+    .tb2{
+        margin-left: 100px;
+        margin-top: 10px;
+        height: 500px;
+    }
+    a:hover {
+        text-decoration: underline; /* Adds an underline when hovering over the link */
+        text-decoration: underline;
+        background-color:rgb(230, 230, 230);
+        border-radius:10px;
+    }
+
+    a:visited {
+        color: purple; /* Sets the color of visited links to purple */
+    }
+
+    a:focus {
+        outline: none; /* Removes the default outline when an anchor tag is focused */
+    }
+
+
+</style>
 {{define "content"}}
-    <div>
+    <body>
+    <div class="tb1">
         {{$res := index .Data "item"}}
         {{$cmt := index .Data "comments"}}
         <table>
@@ -27,7 +129,7 @@
         </table>
     </div>
 
-    <form method="post" action="/items/filter/{{$res.ID}}" novalidate>
+    <form class="writecom" method="post" action="/items/filter/{{$res.ID}}" novalidate>
         <label for="comment">Write Comment:</label>
         <input id="comment" autocomplete="off" type="text"
                name="comment" required>
@@ -45,7 +147,7 @@
         <input type="submit" value="Save">
     </form>
 
-    <div>
+    <div class="tb2">
         <table>
             <thead>
             <tr>
@@ -82,8 +184,9 @@
         </div>
     {{else}}
         <div>
-            <a href="/items/filter/buy/{{$res.ID}}">Buy</a>
+            <a style="margin-left: 20px; padding: 2px 15px" href="/items/filter/buy/{{$res.ID}}">Buy</a>
         </div>
     {{end}}
-    <a href="/items/filter" aria-disabled="true" tabindex="-1">Go Back</a>
+    <a style="margin-left: 20px; padding: 2px 15px;" href="/items/filter" aria-disabled="true" tabindex="-1">Go Back</a>
+    </body>
 {{end}}

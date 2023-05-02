@@ -40,5 +40,8 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/items/filter/buy/{id}", handlers.Repo.BuyItem)
 	mux.Post("/items/filter/buy/{id}", handlers.Repo.PostBuyItem)
 
+	fileServer := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
 	return mux
 }

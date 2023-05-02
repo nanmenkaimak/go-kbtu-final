@@ -9,14 +9,14 @@
         <title>Document</title>
     </head>
     <body>
-        {{block "content" .}}
+    {{block "content" .}}
 
-        {{end}}
+    {{end}}
 
+    <script src="/static/js/scripts.js"></script>
+    {{block "js" .}}
 
-        {{block "js" .}}
-
-        {{end}}
+    {{end}}
 
     </body>
     </html>
